@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  password       String
+  name           String
+  preferences    UserPreference[]
+  purchases      Purchase[]
+  createdAt      DateTime        @default(now())
+}
+
+model Venue {
+  id          String   @id @default(uuid())
+  name        String
+  city        String
+  state       String?
+  country     String
+  events      Event[]
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  price       Float
+  venue       Venue     @relation(fields: [venueId], references: [id])
+  venueId     String
+  purchases   Purchase[]
+}
+
+model Interest {
+  id      String   @id @default(uuid())
+  type    String   // e.g. "music", "comedy", "sports"
+  name    String
+  users   UserPreference[]
+}
+
+model UserPreference {
+  id         String    @id @default(uuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  interest   Interest  @relation(fields: [interestId], references: [id])
+  interestId String
+}
+
+model Purchase {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
+  quantity  Int
+  total     Float
+  createdAt DateTime @default(now())
+}
