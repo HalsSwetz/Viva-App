@@ -9,17 +9,18 @@ const prisma = new PrismaClient();
 
 const authRoutes = require('./routes/auth');
 const healthRoutes = require('./routes/health');
+const preferencesRoutes = require('./routes/preferences');
 
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRoutes);
+app.use('/api', healthRoutes);
+app.use('/api', preferencesRoutes);
+
 app.get('/', (req, res) => {
   res.send('Viva backend is running');
 });
-
-app.use('/api/auth', authRoutes);
-app.use('/api', healthRoutes);
-
 
 
 
