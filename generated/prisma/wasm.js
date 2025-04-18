@@ -142,16 +142,12 @@ exports.Prisma.EventScalarFieldEnum = {
   venueId: 'venueId'
 };
 
-exports.Prisma.InterestScalarFieldEnum = {
-  id: 'id',
-  type: 'type',
-  name: 'name'
-};
-
 exports.Prisma.UserPreferenceScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  interestId: 'interestId'
+  type: 'type',
+  value: 'value',
+  tmId: 'tmId'
 };
 
 exports.Prisma.PurchaseScalarFieldEnum = {
@@ -183,7 +179,6 @@ exports.Prisma.ModelName = {
   User: 'User',
   Venue: 'Venue',
   Event: 'Event',
-  Interest: 'Interest',
   UserPreference: 'UserPreference',
   Purchase: 'Purchase'
 };

@@ -38,19 +38,14 @@ model Event {
   purchases   Purchase[]
 }
 
-model Interest {
-  id    String           @id @default(uuid())
-  type  String
-  name  String
-  users UserPreference[]
-}
 
 model UserPreference {
-  id         String   @id @default(uuid())
-  userId     String
-  interestId String
-  interest   Interest @relation(fields: [interestId], references: [id])
-  user       User     @relation(fields: [userId], references: [id])
+  id       String   @id @default(uuid())
+  userId   String
+  type     String
+  value    String
+  tmId     String?
+  user     User     @relation(fields: [userId], references: [id])
 }
 
 model Purchase {

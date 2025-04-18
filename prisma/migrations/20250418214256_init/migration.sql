@@ -33,19 +33,12 @@ CREATE TABLE "Event" (
 );
 
 -- CreateTable
-CREATE TABLE "Interest" (
-    "id" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-
-    CONSTRAINT "Interest_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "UserPreference" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "interestId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "tmId" TEXT,
 
     CONSTRAINT "UserPreference_pkey" PRIMARY KEY ("id")
 );
@@ -72,10 +65,7 @@ ALTER TABLE "Event" ADD CONSTRAINT "Event_venueId_fkey" FOREIGN KEY ("venueId") 
 ALTER TABLE "UserPreference" ADD CONSTRAINT "UserPreference_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserPreference" ADD CONSTRAINT "UserPreference_interestId_fkey" FOREIGN KEY ("interestId") REFERENCES "Interest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Purchase" ADD CONSTRAINT "Purchase_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
