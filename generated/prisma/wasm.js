@@ -122,6 +122,13 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   name: 'name',
+  phoneNumber: 'phoneNumber',
+  dateOfBirth: 'dateOfBirth',
+  address: 'address',
+  zipCode: 'zipCode',
+  stripeCustomerId: 'stripeCustomerId',
+  wantsPushNotifications: 'wantsPushNotifications',
+  pushToken: 'pushToken',
   createdAt: 'createdAt'
 };
 
@@ -140,6 +147,13 @@ exports.Prisma.EventScalarFieldEnum = {
   date: 'date',
   price: 'price',
   venueId: 'venueId'
+};
+
+exports.Prisma.SavedEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.UserPreferenceScalarFieldEnum = {
@@ -179,6 +193,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Venue: 'Venue',
   Event: 'Event',
+  SavedEvent: 'SavedEvent',
   UserPreference: 'UserPreference',
   Purchase: 'Purchase'
 };

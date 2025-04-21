@@ -9,13 +9,21 @@ datasource db {
 }
 
 model User {
-  id          String           @id @default(uuid())
-  email       String           @unique
-  password    String
-  name        String
-  createdAt   DateTime         @default(now())
-  purchases   Purchase[]
-  preferences UserPreference[]
+  id                     String           @id @default(uuid())
+  email                  String           @unique
+  password               String
+  name                   String
+  phoneNumber            String?
+  dateOfBirth            DateTime?
+  address                String?
+  zipCode                String?
+  stripeCustomerId       String?
+  wantsPushNotifications Boolean          @default(true)
+  pushToken              String?
+  createdAt              DateTime         @default(now())
+  purchases              Purchase[]
+  preferences            UserPreference[]
+  savedEvents            SavedEvent[]
 }
 
 model Venue {
@@ -28,14 +36,24 @@ model Venue {
 }
 
 model Event {
-  id          String     @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String?
   date        DateTime
   price       Float
   venueId     String
-  venue       Venue      @relation(fields: [venueId], references: [id])
+  venue       Venue        @relation(fields: [venueId], references: [id])
   purchases   Purchase[]
+  savedBy     SavedEvent[]
+}
+
+model SavedEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  eventId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
 }
 
 model UserPreference {

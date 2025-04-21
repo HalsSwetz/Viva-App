@@ -29,6 +29,11 @@ export type Venue = $Result.DefaultSelection<Prisma.$VenuePayload>
  */
 export type Event = $Result.DefaultSelection<Prisma.$EventPayload>
 /**
+ * Model SavedEvent
+ * 
+ */
+export type SavedEvent = $Result.DefaultSelection<Prisma.$SavedEventPayload>
+/**
  * Model UserPreference
  * 
  */
@@ -193,6 +198,16 @@ export class PrismaClient<
     * ```
     */
   get event(): Prisma.EventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.savedEvent`: Exposes CRUD operations for the **SavedEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SavedEvents
+    * const savedEvents = await prisma.savedEvent.findMany()
+    * ```
+    */
+  get savedEvent(): Prisma.SavedEventDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.userPreference`: Exposes CRUD operations for the **UserPreference** model.
@@ -656,6 +671,7 @@ export namespace Prisma {
     User: 'User',
     Venue: 'Venue',
     Event: 'Event',
+    SavedEvent: 'SavedEvent',
     UserPreference: 'UserPreference',
     Purchase: 'Purchase'
   };
@@ -676,7 +692,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "venue" | "event" | "userPreference" | "purchase"
+      modelProps: "user" | "venue" | "event" | "savedEvent" | "userPreference" | "purchase"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -899,6 +915,80 @@ export namespace Prisma {
           count: {
             args: Prisma.EventCountArgs<ExtArgs>
             result: $Utils.Optional<EventCountAggregateOutputType> | number
+          }
+        }
+      }
+      SavedEvent: {
+        payload: Prisma.$SavedEventPayload<ExtArgs>
+        fields: Prisma.SavedEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SavedEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SavedEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>
+          }
+          findFirst: {
+            args: Prisma.SavedEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SavedEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>
+          }
+          findMany: {
+            args: Prisma.SavedEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>[]
+          }
+          create: {
+            args: Prisma.SavedEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>
+          }
+          createMany: {
+            args: Prisma.SavedEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SavedEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>[]
+          }
+          delete: {
+            args: Prisma.SavedEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>
+          }
+          update: {
+            args: Prisma.SavedEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.SavedEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SavedEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SavedEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.SavedEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SavedEventPayload>
+          }
+          aggregate: {
+            args: Prisma.SavedEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSavedEvent>
+          }
+          groupBy: {
+            args: Prisma.SavedEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SavedEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SavedEventCountArgs<ExtArgs>
+            result: $Utils.Optional<SavedEventCountAggregateOutputType> | number
           }
         }
       }
@@ -1137,6 +1227,7 @@ export namespace Prisma {
     user?: UserOmit
     venue?: VenueOmit
     event?: EventOmit
+    savedEvent?: SavedEventOmit
     userPreference?: UserPreferenceOmit
     purchase?: PurchaseOmit
   }
@@ -1235,11 +1326,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     purchases: number
     preferences: number
+    savedEvents: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     purchases?: boolean | UserCountOutputTypeCountPurchasesArgs
     preferences?: boolean | UserCountOutputTypeCountPreferencesArgs
+    savedEvents?: boolean | UserCountOutputTypeCountSavedEventsArgs
   }
 
   // Custom InputTypes
@@ -1265,6 +1358,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPreferencesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserPreferenceWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSavedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedEventWhereInput
   }
 
 
@@ -1305,10 +1405,12 @@ export namespace Prisma {
 
   export type EventCountOutputType = {
     purchases: number
+    savedBy: number
   }
 
   export type EventCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     purchases?: boolean | EventCountOutputTypeCountPurchasesArgs
+    savedBy?: boolean | EventCountOutputTypeCountSavedByArgs
   }
 
   // Custom InputTypes
@@ -1327,6 +1429,13 @@ export namespace Prisma {
    */
   export type EventCountOutputTypeCountPurchasesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PurchaseWhereInput
+  }
+
+  /**
+   * EventCountOutputType without action
+   */
+  export type EventCountOutputTypeCountSavedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedEventWhereInput
   }
 
 
@@ -1349,6 +1458,13 @@ export namespace Prisma {
     email: string | null
     password: string | null
     name: string | null
+    phoneNumber: string | null
+    dateOfBirth: Date | null
+    address: string | null
+    zipCode: string | null
+    stripeCustomerId: string | null
+    wantsPushNotifications: boolean | null
+    pushToken: string | null
     createdAt: Date | null
   }
 
@@ -1357,6 +1473,13 @@ export namespace Prisma {
     email: string | null
     password: string | null
     name: string | null
+    phoneNumber: string | null
+    dateOfBirth: Date | null
+    address: string | null
+    zipCode: string | null
+    stripeCustomerId: string | null
+    wantsPushNotifications: boolean | null
+    pushToken: string | null
     createdAt: Date | null
   }
 
@@ -1365,6 +1488,13 @@ export namespace Prisma {
     email: number
     password: number
     name: number
+    phoneNumber: number
+    dateOfBirth: number
+    address: number
+    zipCode: number
+    stripeCustomerId: number
+    wantsPushNotifications: number
+    pushToken: number
     createdAt: number
     _all: number
   }
@@ -1375,6 +1505,13 @@ export namespace Prisma {
     email?: true
     password?: true
     name?: true
+    phoneNumber?: true
+    dateOfBirth?: true
+    address?: true
+    zipCode?: true
+    stripeCustomerId?: true
+    wantsPushNotifications?: true
+    pushToken?: true
     createdAt?: true
   }
 
@@ -1383,6 +1520,13 @@ export namespace Prisma {
     email?: true
     password?: true
     name?: true
+    phoneNumber?: true
+    dateOfBirth?: true
+    address?: true
+    zipCode?: true
+    stripeCustomerId?: true
+    wantsPushNotifications?: true
+    pushToken?: true
     createdAt?: true
   }
 
@@ -1391,6 +1535,13 @@ export namespace Prisma {
     email?: true
     password?: true
     name?: true
+    phoneNumber?: true
+    dateOfBirth?: true
+    address?: true
+    zipCode?: true
+    stripeCustomerId?: true
+    wantsPushNotifications?: true
+    pushToken?: true
     createdAt?: true
     _all?: true
   }
@@ -1472,6 +1623,13 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber: string | null
+    dateOfBirth: Date | null
+    address: string | null
+    zipCode: string | null
+    stripeCustomerId: string | null
+    wantsPushNotifications: boolean
+    pushToken: string | null
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -1497,9 +1655,17 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     name?: boolean
+    phoneNumber?: boolean
+    dateOfBirth?: boolean
+    address?: boolean
+    zipCode?: boolean
+    stripeCustomerId?: boolean
+    wantsPushNotifications?: boolean
+    pushToken?: boolean
     createdAt?: boolean
     purchases?: boolean | User$purchasesArgs<ExtArgs>
     preferences?: boolean | User$preferencesArgs<ExtArgs>
+    savedEvents?: boolean | User$savedEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1508,6 +1674,13 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     name?: boolean
+    phoneNumber?: boolean
+    dateOfBirth?: boolean
+    address?: boolean
+    zipCode?: boolean
+    stripeCustomerId?: boolean
+    wantsPushNotifications?: boolean
+    pushToken?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -1516,6 +1689,13 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     name?: boolean
+    phoneNumber?: boolean
+    dateOfBirth?: boolean
+    address?: boolean
+    zipCode?: boolean
+    stripeCustomerId?: boolean
+    wantsPushNotifications?: boolean
+    pushToken?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -1524,13 +1704,21 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     name?: boolean
+    phoneNumber?: boolean
+    dateOfBirth?: boolean
+    address?: boolean
+    zipCode?: boolean
+    stripeCustomerId?: boolean
+    wantsPushNotifications?: boolean
+    pushToken?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "phoneNumber" | "dateOfBirth" | "address" | "zipCode" | "stripeCustomerId" | "wantsPushNotifications" | "pushToken" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     purchases?: boolean | User$purchasesArgs<ExtArgs>
     preferences?: boolean | User$preferencesArgs<ExtArgs>
+    savedEvents?: boolean | User$savedEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1541,12 +1729,20 @@ export namespace Prisma {
     objects: {
       purchases: Prisma.$PurchasePayload<ExtArgs>[]
       preferences: Prisma.$UserPreferencePayload<ExtArgs>[]
+      savedEvents: Prisma.$SavedEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
       password: string
       name: string
+      phoneNumber: string | null
+      dateOfBirth: Date | null
+      address: string | null
+      zipCode: string | null
+      stripeCustomerId: string | null
+      wantsPushNotifications: boolean
+      pushToken: string | null
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -1944,6 +2140,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     purchases<T extends User$purchasesArgs<ExtArgs> = {}>(args?: Subset<T, User$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     preferences<T extends User$preferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$preferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    savedEvents<T extends User$savedEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$savedEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1977,6 +2174,13 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
+    readonly phoneNumber: FieldRef<"User", 'String'>
+    readonly dateOfBirth: FieldRef<"User", 'DateTime'>
+    readonly address: FieldRef<"User", 'String'>
+    readonly zipCode: FieldRef<"User", 'String'>
+    readonly stripeCustomerId: FieldRef<"User", 'String'>
+    readonly wantsPushNotifications: FieldRef<"User", 'Boolean'>
+    readonly pushToken: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -2411,6 +2615,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserPreferenceScalarFieldEnum | UserPreferenceScalarFieldEnum[]
+  }
+
+  /**
+   * User.savedEvents
+   */
+  export type User$savedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    where?: SavedEventWhereInput
+    orderBy?: SavedEventOrderByWithRelationInput | SavedEventOrderByWithRelationInput[]
+    cursor?: SavedEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedEventScalarFieldEnum | SavedEventScalarFieldEnum[]
   }
 
   /**
@@ -3710,6 +3938,7 @@ export namespace Prisma {
     venueId?: boolean
     venue?: boolean | VenueDefaultArgs<ExtArgs>
     purchases?: boolean | Event$purchasesArgs<ExtArgs>
+    savedBy?: boolean | Event$savedByArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
@@ -3746,6 +3975,7 @@ export namespace Prisma {
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venue?: boolean | VenueDefaultArgs<ExtArgs>
     purchases?: boolean | Event$purchasesArgs<ExtArgs>
+    savedBy?: boolean | Event$savedByArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3760,6 +3990,7 @@ export namespace Prisma {
     objects: {
       venue: Prisma.$VenuePayload<ExtArgs>
       purchases: Prisma.$PurchasePayload<ExtArgs>[]
+      savedBy: Prisma.$SavedEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4164,6 +4395,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     venue<T extends VenueDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenueDefaultArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     purchases<T extends Event$purchasesArgs<ExtArgs> = {}>(args?: Subset<T, Event$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    savedBy<T extends Event$savedByArgs<ExtArgs> = {}>(args?: Subset<T, Event$savedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4619,6 +4851,30 @@ export namespace Prisma {
   }
 
   /**
+   * Event.savedBy
+   */
+  export type Event$savedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    where?: SavedEventWhereInput
+    orderBy?: SavedEventOrderByWithRelationInput | SavedEventOrderByWithRelationInput[]
+    cursor?: SavedEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SavedEventScalarFieldEnum | SavedEventScalarFieldEnum[]
+  }
+
+  /**
    * Event without action
    */
   export type EventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4634,6 +4890,1059 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SavedEvent
+   */
+
+  export type AggregateSavedEvent = {
+    _count: SavedEventCountAggregateOutputType | null
+    _min: SavedEventMinAggregateOutputType | null
+    _max: SavedEventMaxAggregateOutputType | null
+  }
+
+  export type SavedEventMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    eventId: string | null
+    createdAt: Date | null
+  }
+
+  export type SavedEventMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    eventId: string | null
+    createdAt: Date | null
+  }
+
+  export type SavedEventCountAggregateOutputType = {
+    id: number
+    userId: number
+    eventId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SavedEventMinAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+    createdAt?: true
+  }
+
+  export type SavedEventMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+    createdAt?: true
+  }
+
+  export type SavedEventCountAggregateInputType = {
+    id?: true
+    userId?: true
+    eventId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SavedEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedEvent to aggregate.
+     */
+    where?: SavedEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedEvents to fetch.
+     */
+    orderBy?: SavedEventOrderByWithRelationInput | SavedEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SavedEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SavedEvents
+    **/
+    _count?: true | SavedEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SavedEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SavedEventMaxAggregateInputType
+  }
+
+  export type GetSavedEventAggregateType<T extends SavedEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateSavedEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSavedEvent[P]>
+      : GetScalarType<T[P], AggregateSavedEvent[P]>
+  }
+
+
+
+
+  export type SavedEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SavedEventWhereInput
+    orderBy?: SavedEventOrderByWithAggregationInput | SavedEventOrderByWithAggregationInput[]
+    by: SavedEventScalarFieldEnum[] | SavedEventScalarFieldEnum
+    having?: SavedEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SavedEventCountAggregateInputType | true
+    _min?: SavedEventMinAggregateInputType
+    _max?: SavedEventMaxAggregateInputType
+  }
+
+  export type SavedEventGroupByOutputType = {
+    id: string
+    userId: string
+    eventId: string
+    createdAt: Date
+    _count: SavedEventCountAggregateOutputType | null
+    _min: SavedEventMinAggregateOutputType | null
+    _max: SavedEventMaxAggregateOutputType | null
+  }
+
+  type GetSavedEventGroupByPayload<T extends SavedEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SavedEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SavedEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SavedEventGroupByOutputType[P]>
+            : GetScalarType<T[P], SavedEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SavedEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedEvent"]>
+
+  export type SavedEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedEvent"]>
+
+  export type SavedEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["savedEvent"]>
+
+  export type SavedEventSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    eventId?: boolean
+    createdAt?: boolean
+  }
+
+  export type SavedEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "createdAt", ExtArgs["result"]["savedEvent"]>
+  export type SavedEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type SavedEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+  export type SavedEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    event?: boolean | EventDefaultArgs<ExtArgs>
+  }
+
+  export type $SavedEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SavedEvent"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      event: Prisma.$EventPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      eventId: string
+      createdAt: Date
+    }, ExtArgs["result"]["savedEvent"]>
+    composites: {}
+  }
+
+  type SavedEventGetPayload<S extends boolean | null | undefined | SavedEventDefaultArgs> = $Result.GetResult<Prisma.$SavedEventPayload, S>
+
+  type SavedEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SavedEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SavedEventCountAggregateInputType | true
+    }
+
+  export interface SavedEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SavedEvent'], meta: { name: 'SavedEvent' } }
+    /**
+     * Find zero or one SavedEvent that matches the filter.
+     * @param {SavedEventFindUniqueArgs} args - Arguments to find a SavedEvent
+     * @example
+     * // Get one SavedEvent
+     * const savedEvent = await prisma.savedEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SavedEventFindUniqueArgs>(args: SelectSubset<T, SavedEventFindUniqueArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SavedEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SavedEventFindUniqueOrThrowArgs} args - Arguments to find a SavedEvent
+     * @example
+     * // Get one SavedEvent
+     * const savedEvent = await prisma.savedEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SavedEventFindUniqueOrThrowArgs>(args: SelectSubset<T, SavedEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventFindFirstArgs} args - Arguments to find a SavedEvent
+     * @example
+     * // Get one SavedEvent
+     * const savedEvent = await prisma.savedEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SavedEventFindFirstArgs>(args?: SelectSubset<T, SavedEventFindFirstArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SavedEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventFindFirstOrThrowArgs} args - Arguments to find a SavedEvent
+     * @example
+     * // Get one SavedEvent
+     * const savedEvent = await prisma.savedEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SavedEventFindFirstOrThrowArgs>(args?: SelectSubset<T, SavedEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SavedEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SavedEvents
+     * const savedEvents = await prisma.savedEvent.findMany()
+     * 
+     * // Get first 10 SavedEvents
+     * const savedEvents = await prisma.savedEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const savedEventWithIdOnly = await prisma.savedEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SavedEventFindManyArgs>(args?: SelectSubset<T, SavedEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SavedEvent.
+     * @param {SavedEventCreateArgs} args - Arguments to create a SavedEvent.
+     * @example
+     * // Create one SavedEvent
+     * const SavedEvent = await prisma.savedEvent.create({
+     *   data: {
+     *     // ... data to create a SavedEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends SavedEventCreateArgs>(args: SelectSubset<T, SavedEventCreateArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SavedEvents.
+     * @param {SavedEventCreateManyArgs} args - Arguments to create many SavedEvents.
+     * @example
+     * // Create many SavedEvents
+     * const savedEvent = await prisma.savedEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SavedEventCreateManyArgs>(args?: SelectSubset<T, SavedEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SavedEvents and returns the data saved in the database.
+     * @param {SavedEventCreateManyAndReturnArgs} args - Arguments to create many SavedEvents.
+     * @example
+     * // Create many SavedEvents
+     * const savedEvent = await prisma.savedEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SavedEvents and only return the `id`
+     * const savedEventWithIdOnly = await prisma.savedEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SavedEventCreateManyAndReturnArgs>(args?: SelectSubset<T, SavedEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SavedEvent.
+     * @param {SavedEventDeleteArgs} args - Arguments to delete one SavedEvent.
+     * @example
+     * // Delete one SavedEvent
+     * const SavedEvent = await prisma.savedEvent.delete({
+     *   where: {
+     *     // ... filter to delete one SavedEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SavedEventDeleteArgs>(args: SelectSubset<T, SavedEventDeleteArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SavedEvent.
+     * @param {SavedEventUpdateArgs} args - Arguments to update one SavedEvent.
+     * @example
+     * // Update one SavedEvent
+     * const savedEvent = await prisma.savedEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SavedEventUpdateArgs>(args: SelectSubset<T, SavedEventUpdateArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SavedEvents.
+     * @param {SavedEventDeleteManyArgs} args - Arguments to filter SavedEvents to delete.
+     * @example
+     * // Delete a few SavedEvents
+     * const { count } = await prisma.savedEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SavedEventDeleteManyArgs>(args?: SelectSubset<T, SavedEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SavedEvents
+     * const savedEvent = await prisma.savedEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SavedEventUpdateManyArgs>(args: SelectSubset<T, SavedEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SavedEvents and returns the data updated in the database.
+     * @param {SavedEventUpdateManyAndReturnArgs} args - Arguments to update many SavedEvents.
+     * @example
+     * // Update many SavedEvents
+     * const savedEvent = await prisma.savedEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SavedEvents and only return the `id`
+     * const savedEventWithIdOnly = await prisma.savedEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SavedEventUpdateManyAndReturnArgs>(args: SelectSubset<T, SavedEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SavedEvent.
+     * @param {SavedEventUpsertArgs} args - Arguments to update or create a SavedEvent.
+     * @example
+     * // Update or create a SavedEvent
+     * const savedEvent = await prisma.savedEvent.upsert({
+     *   create: {
+     *     // ... data to create a SavedEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SavedEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SavedEventUpsertArgs>(args: SelectSubset<T, SavedEventUpsertArgs<ExtArgs>>): Prisma__SavedEventClient<$Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SavedEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventCountArgs} args - Arguments to filter SavedEvents to count.
+     * @example
+     * // Count the number of SavedEvents
+     * const count = await prisma.savedEvent.count({
+     *   where: {
+     *     // ... the filter for the SavedEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends SavedEventCountArgs>(
+      args?: Subset<T, SavedEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SavedEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SavedEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SavedEventAggregateArgs>(args: Subset<T, SavedEventAggregateArgs>): Prisma.PrismaPromise<GetSavedEventAggregateType<T>>
+
+    /**
+     * Group by SavedEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SavedEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SavedEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SavedEventGroupByArgs['orderBy'] }
+        : { orderBy?: SavedEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SavedEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSavedEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SavedEvent model
+   */
+  readonly fields: SavedEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SavedEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SavedEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SavedEvent model
+   */
+  interface SavedEventFieldRefs {
+    readonly id: FieldRef<"SavedEvent", 'String'>
+    readonly userId: FieldRef<"SavedEvent", 'String'>
+    readonly eventId: FieldRef<"SavedEvent", 'String'>
+    readonly createdAt: FieldRef<"SavedEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SavedEvent findUnique
+   */
+  export type SavedEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedEvent to fetch.
+     */
+    where: SavedEventWhereUniqueInput
+  }
+
+  /**
+   * SavedEvent findUniqueOrThrow
+   */
+  export type SavedEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedEvent to fetch.
+     */
+    where: SavedEventWhereUniqueInput
+  }
+
+  /**
+   * SavedEvent findFirst
+   */
+  export type SavedEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedEvent to fetch.
+     */
+    where?: SavedEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedEvents to fetch.
+     */
+    orderBy?: SavedEventOrderByWithRelationInput | SavedEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedEvents.
+     */
+    cursor?: SavedEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedEvents.
+     */
+    distinct?: SavedEventScalarFieldEnum | SavedEventScalarFieldEnum[]
+  }
+
+  /**
+   * SavedEvent findFirstOrThrow
+   */
+  export type SavedEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedEvent to fetch.
+     */
+    where?: SavedEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedEvents to fetch.
+     */
+    orderBy?: SavedEventOrderByWithRelationInput | SavedEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SavedEvents.
+     */
+    cursor?: SavedEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SavedEvents.
+     */
+    distinct?: SavedEventScalarFieldEnum | SavedEventScalarFieldEnum[]
+  }
+
+  /**
+   * SavedEvent findMany
+   */
+  export type SavedEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * Filter, which SavedEvents to fetch.
+     */
+    where?: SavedEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SavedEvents to fetch.
+     */
+    orderBy?: SavedEventOrderByWithRelationInput | SavedEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SavedEvents.
+     */
+    cursor?: SavedEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SavedEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SavedEvents.
+     */
+    skip?: number
+    distinct?: SavedEventScalarFieldEnum | SavedEventScalarFieldEnum[]
+  }
+
+  /**
+   * SavedEvent create
+   */
+  export type SavedEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SavedEvent.
+     */
+    data: XOR<SavedEventCreateInput, SavedEventUncheckedCreateInput>
+  }
+
+  /**
+   * SavedEvent createMany
+   */
+  export type SavedEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SavedEvents.
+     */
+    data: SavedEventCreateManyInput | SavedEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SavedEvent createManyAndReturn
+   */
+  export type SavedEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many SavedEvents.
+     */
+    data: SavedEventCreateManyInput | SavedEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedEvent update
+   */
+  export type SavedEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SavedEvent.
+     */
+    data: XOR<SavedEventUpdateInput, SavedEventUncheckedUpdateInput>
+    /**
+     * Choose, which SavedEvent to update.
+     */
+    where: SavedEventWhereUniqueInput
+  }
+
+  /**
+   * SavedEvent updateMany
+   */
+  export type SavedEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SavedEvents.
+     */
+    data: XOR<SavedEventUpdateManyMutationInput, SavedEventUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedEvents to update
+     */
+    where?: SavedEventWhereInput
+    /**
+     * Limit how many SavedEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedEvent updateManyAndReturn
+   */
+  export type SavedEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * The data used to update SavedEvents.
+     */
+    data: XOR<SavedEventUpdateManyMutationInput, SavedEventUncheckedUpdateManyInput>
+    /**
+     * Filter which SavedEvents to update
+     */
+    where?: SavedEventWhereInput
+    /**
+     * Limit how many SavedEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SavedEvent upsert
+   */
+  export type SavedEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SavedEvent to update in case it exists.
+     */
+    where: SavedEventWhereUniqueInput
+    /**
+     * In case the SavedEvent found by the `where` argument doesn't exist, create a new SavedEvent with this data.
+     */
+    create: XOR<SavedEventCreateInput, SavedEventUncheckedCreateInput>
+    /**
+     * In case the SavedEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SavedEventUpdateInput, SavedEventUncheckedUpdateInput>
+  }
+
+  /**
+   * SavedEvent delete
+   */
+  export type SavedEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
+    /**
+     * Filter which SavedEvent to delete.
+     */
+    where: SavedEventWhereUniqueInput
+  }
+
+  /**
+   * SavedEvent deleteMany
+   */
+  export type SavedEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SavedEvents to delete
+     */
+    where?: SavedEventWhereInput
+    /**
+     * Limit how many SavedEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SavedEvent without action
+   */
+  export type SavedEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SavedEvent
+     */
+    select?: SavedEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SavedEvent
+     */
+    omit?: SavedEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SavedEventInclude<ExtArgs> | null
   }
 
 
@@ -6831,6 +8140,13 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     name: 'name',
+    phoneNumber: 'phoneNumber',
+    dateOfBirth: 'dateOfBirth',
+    address: 'address',
+    zipCode: 'zipCode',
+    stripeCustomerId: 'stripeCustomerId',
+    wantsPushNotifications: 'wantsPushNotifications',
+    pushToken: 'pushToken',
     createdAt: 'createdAt'
   };
 
@@ -6858,6 +8174,16 @@ export namespace Prisma {
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+  export const SavedEventScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    eventId: 'eventId',
+    createdAt: 'createdAt'
+  };
+
+  export type SavedEventScalarFieldEnum = (typeof SavedEventScalarFieldEnum)[keyof typeof SavedEventScalarFieldEnum]
 
 
   export const UserPreferenceScalarFieldEnum: {
@@ -6941,6 +8267,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -6979,9 +8312,17 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
+    phoneNumber?: StringNullableFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    zipCode?: StringNullableFilter<"User"> | string | null
+    stripeCustomerId?: StringNullableFilter<"User"> | string | null
+    wantsPushNotifications?: BoolFilter<"User"> | boolean
+    pushToken?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     purchases?: PurchaseListRelationFilter
     preferences?: UserPreferenceListRelationFilter
+    savedEvents?: SavedEventListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6989,9 +8330,17 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     name?: SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
+    dateOfBirth?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    zipCode?: SortOrderInput | SortOrder
+    stripeCustomerId?: SortOrderInput | SortOrder
+    wantsPushNotifications?: SortOrder
+    pushToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     purchases?: PurchaseOrderByRelationAggregateInput
     preferences?: UserPreferenceOrderByRelationAggregateInput
+    savedEvents?: SavedEventOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7002,9 +8351,17 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     password?: StringFilter<"User"> | string
     name?: StringFilter<"User"> | string
+    phoneNumber?: StringNullableFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    address?: StringNullableFilter<"User"> | string | null
+    zipCode?: StringNullableFilter<"User"> | string | null
+    stripeCustomerId?: StringNullableFilter<"User"> | string | null
+    wantsPushNotifications?: BoolFilter<"User"> | boolean
+    pushToken?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     purchases?: PurchaseListRelationFilter
     preferences?: UserPreferenceListRelationFilter
+    savedEvents?: SavedEventListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -7012,6 +8369,13 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     name?: SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
+    dateOfBirth?: SortOrderInput | SortOrder
+    address?: SortOrderInput | SortOrder
+    zipCode?: SortOrderInput | SortOrder
+    stripeCustomerId?: SortOrderInput | SortOrder
+    wantsPushNotifications?: SortOrder
+    pushToken?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -7026,6 +8390,13 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     name?: StringWithAggregatesFilter<"User"> | string
+    phoneNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
+    dateOfBirth?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    address?: StringNullableWithAggregatesFilter<"User"> | string | null
+    zipCode?: StringNullableWithAggregatesFilter<"User"> | string | null
+    stripeCustomerId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    wantsPushNotifications?: BoolWithAggregatesFilter<"User"> | boolean
+    pushToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -7096,6 +8467,7 @@ export namespace Prisma {
     venueId?: StringFilter<"Event"> | string
     venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     purchases?: PurchaseListRelationFilter
+    savedBy?: SavedEventListRelationFilter
   }
 
   export type EventOrderByWithRelationInput = {
@@ -7107,6 +8479,7 @@ export namespace Prisma {
     venueId?: SortOrder
     venue?: VenueOrderByWithRelationInput
     purchases?: PurchaseOrderByRelationAggregateInput
+    savedBy?: SavedEventOrderByRelationAggregateInput
   }
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -7121,6 +8494,7 @@ export namespace Prisma {
     venueId?: StringFilter<"Event"> | string
     venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     purchases?: PurchaseListRelationFilter
+    savedBy?: SavedEventListRelationFilter
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -7147,6 +8521,59 @@ export namespace Prisma {
     date?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     price?: FloatWithAggregatesFilter<"Event"> | number
     venueId?: StringWithAggregatesFilter<"Event"> | string
+  }
+
+  export type SavedEventWhereInput = {
+    AND?: SavedEventWhereInput | SavedEventWhereInput[]
+    OR?: SavedEventWhereInput[]
+    NOT?: SavedEventWhereInput | SavedEventWhereInput[]
+    id?: StringFilter<"SavedEvent"> | string
+    userId?: StringFilter<"SavedEvent"> | string
+    eventId?: StringFilter<"SavedEvent"> | string
+    createdAt?: DateTimeFilter<"SavedEvent"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }
+
+  export type SavedEventOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    event?: EventOrderByWithRelationInput
+  }
+
+  export type SavedEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SavedEventWhereInput | SavedEventWhereInput[]
+    OR?: SavedEventWhereInput[]
+    NOT?: SavedEventWhereInput | SavedEventWhereInput[]
+    userId?: StringFilter<"SavedEvent"> | string
+    eventId?: StringFilter<"SavedEvent"> | string
+    createdAt?: DateTimeFilter<"SavedEvent"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+  }, "id">
+
+  export type SavedEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+    _count?: SavedEventCountOrderByAggregateInput
+    _max?: SavedEventMaxOrderByAggregateInput
+    _min?: SavedEventMinOrderByAggregateInput
+  }
+
+  export type SavedEventScalarWhereWithAggregatesInput = {
+    AND?: SavedEventScalarWhereWithAggregatesInput | SavedEventScalarWhereWithAggregatesInput[]
+    OR?: SavedEventScalarWhereWithAggregatesInput[]
+    NOT?: SavedEventScalarWhereWithAggregatesInput | SavedEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SavedEvent"> | string
+    userId?: StringWithAggregatesFilter<"SavedEvent"> | string
+    eventId?: StringWithAggregatesFilter<"SavedEvent"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SavedEvent"> | Date | string
   }
 
   export type UserPreferenceWhereInput = {
@@ -7274,9 +8701,17 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
     purchases?: PurchaseCreateNestedManyWithoutUserInput
     preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    savedEvents?: SavedEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7284,9 +8719,17 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
     purchases?: PurchaseUncheckedCreateNestedManyWithoutUserInput
     preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    savedEvents?: SavedEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7294,9 +8737,17 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUpdateManyWithoutUserNestedInput
     preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    savedEvents?: SavedEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7304,9 +8755,17 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
     preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    savedEvents?: SavedEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7314,6 +8773,13 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
   }
 
@@ -7322,6 +8788,13 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7330,6 +8803,13 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7401,6 +8881,7 @@ export namespace Prisma {
     price: number
     venue: VenueCreateNestedOneWithoutEventsInput
     purchases?: PurchaseCreateNestedManyWithoutEventInput
+    savedBy?: SavedEventCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -7411,6 +8892,7 @@ export namespace Prisma {
     price: number
     venueId: string
     purchases?: PurchaseUncheckedCreateNestedManyWithoutEventInput
+    savedBy?: SavedEventUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventUpdateInput = {
@@ -7421,6 +8903,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     venue?: VenueUpdateOneRequiredWithoutEventsNestedInput
     purchases?: PurchaseUpdateManyWithoutEventNestedInput
+    savedBy?: SavedEventUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -7431,6 +8914,7 @@ export namespace Prisma {
     price?: FloatFieldUpdateOperationsInput | number
     venueId?: StringFieldUpdateOperationsInput | string
     purchases?: PurchaseUncheckedUpdateManyWithoutEventNestedInput
+    savedBy?: SavedEventUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventCreateManyInput = {
@@ -7457,6 +8941,53 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: FloatFieldUpdateOperationsInput | number
     venueId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SavedEventCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSavedEventsInput
+    event: EventCreateNestedOneWithoutSavedByInput
+  }
+
+  export type SavedEventUncheckedCreateInput = {
+    id?: string
+    userId: string
+    eventId: string
+    createdAt?: Date | string
+  }
+
+  export type SavedEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSavedEventsNestedInput
+    event?: EventUpdateOneRequiredWithoutSavedByNestedInput
+  }
+
+  export type SavedEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedEventCreateManyInput = {
+    id?: string
+    userId: string
+    eventId: string
+    createdAt?: Date | string
+  }
+
+  export type SavedEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserPreferenceCreateInput = {
@@ -7590,6 +9121,37 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7613,6 +9175,17 @@ export namespace Prisma {
     none?: UserPreferenceWhereInput
   }
 
+  export type SavedEventListRelationFilter = {
+    every?: SavedEventWhereInput
+    some?: SavedEventWhereInput
+    none?: SavedEventWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
   export type PurchaseOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -7621,11 +9194,22 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SavedEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
     name?: SortOrder
+    phoneNumber?: SortOrder
+    dateOfBirth?: SortOrder
+    address?: SortOrder
+    zipCode?: SortOrder
+    stripeCustomerId?: SortOrder
+    wantsPushNotifications?: SortOrder
+    pushToken?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7634,6 +9218,13 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     name?: SortOrder
+    phoneNumber?: SortOrder
+    dateOfBirth?: SortOrder
+    address?: SortOrder
+    zipCode?: SortOrder
+    stripeCustomerId?: SortOrder
+    wantsPushNotifications?: SortOrder
+    pushToken?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7642,6 +9233,13 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     name?: SortOrder
+    phoneNumber?: SortOrder
+    dateOfBirth?: SortOrder
+    address?: SortOrder
+    zipCode?: SortOrder
+    stripeCustomerId?: SortOrder
+    wantsPushNotifications?: SortOrder
+    pushToken?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -7663,6 +9261,46 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7677,30 +9315,10 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type EventListRelationFilter = {
     every?: EventWhereInput
     some?: EventWhereInput
     none?: EventWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type EventOrderByRelationAggregateInput = {
@@ -7729,24 +9347,6 @@ export namespace Prisma {
     city?: SortOrder
     state?: SortOrder
     country?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -7821,6 +9421,32 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
+  export type EventScalarRelationFilter = {
+    is?: EventWhereInput
+    isNot?: EventWhereInput
+  }
+
+  export type SavedEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SavedEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SavedEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    eventId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserPreferenceCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -7854,11 +9480,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type EventScalarRelationFilter = {
-    is?: EventWhereInput
-    isNot?: EventWhereInput
   }
 
   export type PurchaseCountOrderByAggregateInput = {
@@ -7928,6 +9549,13 @@ export namespace Prisma {
     connect?: UserPreferenceWhereUniqueInput | UserPreferenceWhereUniqueInput[]
   }
 
+  export type SavedEventCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedEventCreateWithoutUserInput, SavedEventUncheckedCreateWithoutUserInput> | SavedEventCreateWithoutUserInput[] | SavedEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutUserInput | SavedEventCreateOrConnectWithoutUserInput[]
+    createMany?: SavedEventCreateManyUserInputEnvelope
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+  }
+
   export type PurchaseUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PurchaseCreateWithoutUserInput, PurchaseUncheckedCreateWithoutUserInput> | PurchaseCreateWithoutUserInput[] | PurchaseUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PurchaseCreateOrConnectWithoutUserInput | PurchaseCreateOrConnectWithoutUserInput[]
@@ -7942,8 +9570,27 @@ export namespace Prisma {
     connect?: UserPreferenceWhereUniqueInput | UserPreferenceWhereUniqueInput[]
   }
 
+  export type SavedEventUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SavedEventCreateWithoutUserInput, SavedEventUncheckedCreateWithoutUserInput> | SavedEventCreateWithoutUserInput[] | SavedEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutUserInput | SavedEventCreateOrConnectWithoutUserInput[]
+    createMany?: SavedEventCreateManyUserInputEnvelope
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -7978,6 +9625,20 @@ export namespace Prisma {
     deleteMany?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
   }
 
+  export type SavedEventUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedEventCreateWithoutUserInput, SavedEventUncheckedCreateWithoutUserInput> | SavedEventCreateWithoutUserInput[] | SavedEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutUserInput | SavedEventCreateOrConnectWithoutUserInput[]
+    upsert?: SavedEventUpsertWithWhereUniqueWithoutUserInput | SavedEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedEventCreateManyUserInputEnvelope
+    set?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    disconnect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    delete?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    update?: SavedEventUpdateWithWhereUniqueWithoutUserInput | SavedEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedEventUpdateManyWithWhereWithoutUserInput | SavedEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedEventScalarWhereInput | SavedEventScalarWhereInput[]
+  }
+
   export type PurchaseUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PurchaseCreateWithoutUserInput, PurchaseUncheckedCreateWithoutUserInput> | PurchaseCreateWithoutUserInput[] | PurchaseUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PurchaseCreateOrConnectWithoutUserInput | PurchaseCreateOrConnectWithoutUserInput[]
@@ -8006,6 +9667,20 @@ export namespace Prisma {
     deleteMany?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
   }
 
+  export type SavedEventUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SavedEventCreateWithoutUserInput, SavedEventUncheckedCreateWithoutUserInput> | SavedEventCreateWithoutUserInput[] | SavedEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutUserInput | SavedEventCreateOrConnectWithoutUserInput[]
+    upsert?: SavedEventUpsertWithWhereUniqueWithoutUserInput | SavedEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SavedEventCreateManyUserInputEnvelope
+    set?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    disconnect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    delete?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    update?: SavedEventUpdateWithWhereUniqueWithoutUserInput | SavedEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SavedEventUpdateManyWithWhereWithoutUserInput | SavedEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SavedEventScalarWhereInput | SavedEventScalarWhereInput[]
+  }
+
   export type EventCreateNestedManyWithoutVenueInput = {
     create?: XOR<EventCreateWithoutVenueInput, EventUncheckedCreateWithoutVenueInput> | EventCreateWithoutVenueInput[] | EventUncheckedCreateWithoutVenueInput[]
     connectOrCreate?: EventCreateOrConnectWithoutVenueInput | EventCreateOrConnectWithoutVenueInput[]
@@ -8018,10 +9693,6 @@ export namespace Prisma {
     connectOrCreate?: EventCreateOrConnectWithoutVenueInput | EventCreateOrConnectWithoutVenueInput[]
     createMany?: EventCreateManyVenueInputEnvelope
     connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type EventUpdateManyWithoutVenueNestedInput = {
@@ -8065,11 +9736,25 @@ export namespace Prisma {
     connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
   }
 
+  export type SavedEventCreateNestedManyWithoutEventInput = {
+    create?: XOR<SavedEventCreateWithoutEventInput, SavedEventUncheckedCreateWithoutEventInput> | SavedEventCreateWithoutEventInput[] | SavedEventUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutEventInput | SavedEventCreateOrConnectWithoutEventInput[]
+    createMany?: SavedEventCreateManyEventInputEnvelope
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+  }
+
   export type PurchaseUncheckedCreateNestedManyWithoutEventInput = {
     create?: XOR<PurchaseCreateWithoutEventInput, PurchaseUncheckedCreateWithoutEventInput> | PurchaseCreateWithoutEventInput[] | PurchaseUncheckedCreateWithoutEventInput[]
     connectOrCreate?: PurchaseCreateOrConnectWithoutEventInput | PurchaseCreateOrConnectWithoutEventInput[]
     createMany?: PurchaseCreateManyEventInputEnvelope
     connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+  }
+
+  export type SavedEventUncheckedCreateNestedManyWithoutEventInput = {
+    create?: XOR<SavedEventCreateWithoutEventInput, SavedEventUncheckedCreateWithoutEventInput> | SavedEventCreateWithoutEventInput[] | SavedEventUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutEventInput | SavedEventCreateOrConnectWithoutEventInput[]
+    createMany?: SavedEventCreateManyEventInputEnvelope
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -8102,6 +9787,20 @@ export namespace Prisma {
     deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
   }
 
+  export type SavedEventUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SavedEventCreateWithoutEventInput, SavedEventUncheckedCreateWithoutEventInput> | SavedEventCreateWithoutEventInput[] | SavedEventUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutEventInput | SavedEventCreateOrConnectWithoutEventInput[]
+    upsert?: SavedEventUpsertWithWhereUniqueWithoutEventInput | SavedEventUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SavedEventCreateManyEventInputEnvelope
+    set?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    disconnect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    delete?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    update?: SavedEventUpdateWithWhereUniqueWithoutEventInput | SavedEventUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SavedEventUpdateManyWithWhereWithoutEventInput | SavedEventUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SavedEventScalarWhereInput | SavedEventScalarWhereInput[]
+  }
+
   export type PurchaseUncheckedUpdateManyWithoutEventNestedInput = {
     create?: XOR<PurchaseCreateWithoutEventInput, PurchaseUncheckedCreateWithoutEventInput> | PurchaseCreateWithoutEventInput[] | PurchaseUncheckedCreateWithoutEventInput[]
     connectOrCreate?: PurchaseCreateOrConnectWithoutEventInput | PurchaseCreateOrConnectWithoutEventInput[]
@@ -8114,6 +9813,48 @@ export namespace Prisma {
     update?: PurchaseUpdateWithWhereUniqueWithoutEventInput | PurchaseUpdateWithWhereUniqueWithoutEventInput[]
     updateMany?: PurchaseUpdateManyWithWhereWithoutEventInput | PurchaseUpdateManyWithWhereWithoutEventInput[]
     deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
+  }
+
+  export type SavedEventUncheckedUpdateManyWithoutEventNestedInput = {
+    create?: XOR<SavedEventCreateWithoutEventInput, SavedEventUncheckedCreateWithoutEventInput> | SavedEventCreateWithoutEventInput[] | SavedEventUncheckedCreateWithoutEventInput[]
+    connectOrCreate?: SavedEventCreateOrConnectWithoutEventInput | SavedEventCreateOrConnectWithoutEventInput[]
+    upsert?: SavedEventUpsertWithWhereUniqueWithoutEventInput | SavedEventUpsertWithWhereUniqueWithoutEventInput[]
+    createMany?: SavedEventCreateManyEventInputEnvelope
+    set?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    disconnect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    delete?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    connect?: SavedEventWhereUniqueInput | SavedEventWhereUniqueInput[]
+    update?: SavedEventUpdateWithWhereUniqueWithoutEventInput | SavedEventUpdateWithWhereUniqueWithoutEventInput[]
+    updateMany?: SavedEventUpdateManyWithWhereWithoutEventInput | SavedEventUpdateManyWithWhereWithoutEventInput[]
+    deleteMany?: SavedEventScalarWhereInput | SavedEventScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutSavedEventsInput = {
+    create?: XOR<UserCreateWithoutSavedEventsInput, UserUncheckedCreateWithoutSavedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSavedEventsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EventCreateNestedOneWithoutSavedByInput = {
+    create?: XOR<EventCreateWithoutSavedByInput, EventUncheckedCreateWithoutSavedByInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSavedByInput
+    connect?: EventWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutSavedEventsNestedInput = {
+    create?: XOR<UserCreateWithoutSavedEventsInput, UserUncheckedCreateWithoutSavedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSavedEventsInput
+    upsert?: UserUpsertWithoutSavedEventsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSavedEventsInput, UserUpdateWithoutSavedEventsInput>, UserUncheckedUpdateWithoutSavedEventsInput>
+  }
+
+  export type EventUpdateOneRequiredWithoutSavedByNestedInput = {
+    create?: XOR<EventCreateWithoutSavedByInput, EventUncheckedCreateWithoutSavedByInput>
+    connectOrCreate?: EventCreateOrConnectWithoutSavedByInput
+    upsert?: EventUpsertWithoutSavedByInput
+    connect?: EventWhereUniqueInput
+    update?: XOR<XOR<EventUpdateToOneWithWhereWithoutSavedByInput, EventUpdateWithoutSavedByInput>, EventUncheckedUpdateWithoutSavedByInput>
   }
 
   export type UserCreateNestedOneWithoutPreferencesInput = {
@@ -8180,6 +9921,36 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8219,34 +9990,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -8273,6 +10016,42 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedFloatFilter<$PrismaModel = never> = {
@@ -8368,6 +10147,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SavedEventCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    event: EventCreateNestedOneWithoutSavedByInput
+  }
+
+  export type SavedEventUncheckedCreateWithoutUserInput = {
+    id?: string
+    eventId: string
+    createdAt?: Date | string
+  }
+
+  export type SavedEventCreateOrConnectWithoutUserInput = {
+    where: SavedEventWhereUniqueInput
+    create: XOR<SavedEventCreateWithoutUserInput, SavedEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedEventCreateManyUserInputEnvelope = {
+    data: SavedEventCreateManyUserInput | SavedEventCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PurchaseUpsertWithWhereUniqueWithoutUserInput = {
     where: PurchaseWhereUniqueInput
     update: XOR<PurchaseUpdateWithoutUserInput, PurchaseUncheckedUpdateWithoutUserInput>
@@ -8423,6 +10224,32 @@ export namespace Prisma {
     tmId?: StringNullableFilter<"UserPreference"> | string | null
   }
 
+  export type SavedEventUpsertWithWhereUniqueWithoutUserInput = {
+    where: SavedEventWhereUniqueInput
+    update: XOR<SavedEventUpdateWithoutUserInput, SavedEventUncheckedUpdateWithoutUserInput>
+    create: XOR<SavedEventCreateWithoutUserInput, SavedEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type SavedEventUpdateWithWhereUniqueWithoutUserInput = {
+    where: SavedEventWhereUniqueInput
+    data: XOR<SavedEventUpdateWithoutUserInput, SavedEventUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SavedEventUpdateManyWithWhereWithoutUserInput = {
+    where: SavedEventScalarWhereInput
+    data: XOR<SavedEventUpdateManyMutationInput, SavedEventUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SavedEventScalarWhereInput = {
+    AND?: SavedEventScalarWhereInput | SavedEventScalarWhereInput[]
+    OR?: SavedEventScalarWhereInput[]
+    NOT?: SavedEventScalarWhereInput | SavedEventScalarWhereInput[]
+    id?: StringFilter<"SavedEvent"> | string
+    userId?: StringFilter<"SavedEvent"> | string
+    eventId?: StringFilter<"SavedEvent"> | string
+    createdAt?: DateTimeFilter<"SavedEvent"> | Date | string
+  }
+
   export type EventCreateWithoutVenueInput = {
     id?: string
     title: string
@@ -8430,6 +10257,7 @@ export namespace Prisma {
     date: Date | string
     price: number
     purchases?: PurchaseCreateNestedManyWithoutEventInput
+    savedBy?: SavedEventCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutVenueInput = {
@@ -8439,6 +10267,7 @@ export namespace Prisma {
     date: Date | string
     price: number
     purchases?: PurchaseUncheckedCreateNestedManyWithoutEventInput
+    savedBy?: SavedEventUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutVenueInput = {
@@ -8526,6 +10355,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SavedEventCreateWithoutEventInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSavedEventsInput
+  }
+
+  export type SavedEventUncheckedCreateWithoutEventInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type SavedEventCreateOrConnectWithoutEventInput = {
+    where: SavedEventWhereUniqueInput
+    create: XOR<SavedEventCreateWithoutEventInput, SavedEventUncheckedCreateWithoutEventInput>
+  }
+
+  export type SavedEventCreateManyEventInputEnvelope = {
+    data: SavedEventCreateManyEventInput | SavedEventCreateManyEventInput[]
+    skipDuplicates?: boolean
+  }
+
   export type VenueUpsertWithoutEventsInput = {
     update: XOR<VenueUpdateWithoutEventsInput, VenueUncheckedUpdateWithoutEventsInput>
     create: XOR<VenueCreateWithoutEventsInput, VenueUncheckedCreateWithoutEventsInput>
@@ -8569,13 +10420,177 @@ export namespace Prisma {
     data: XOR<PurchaseUpdateManyMutationInput, PurchaseUncheckedUpdateManyWithoutEventInput>
   }
 
+  export type SavedEventUpsertWithWhereUniqueWithoutEventInput = {
+    where: SavedEventWhereUniqueInput
+    update: XOR<SavedEventUpdateWithoutEventInput, SavedEventUncheckedUpdateWithoutEventInput>
+    create: XOR<SavedEventCreateWithoutEventInput, SavedEventUncheckedCreateWithoutEventInput>
+  }
+
+  export type SavedEventUpdateWithWhereUniqueWithoutEventInput = {
+    where: SavedEventWhereUniqueInput
+    data: XOR<SavedEventUpdateWithoutEventInput, SavedEventUncheckedUpdateWithoutEventInput>
+  }
+
+  export type SavedEventUpdateManyWithWhereWithoutEventInput = {
+    where: SavedEventScalarWhereInput
+    data: XOR<SavedEventUpdateManyMutationInput, SavedEventUncheckedUpdateManyWithoutEventInput>
+  }
+
+  export type UserCreateWithoutSavedEventsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
+    createdAt?: Date | string
+    purchases?: PurchaseCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSavedEventsInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
+    createdAt?: Date | string
+    purchases?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSavedEventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSavedEventsInput, UserUncheckedCreateWithoutSavedEventsInput>
+  }
+
+  export type EventCreateWithoutSavedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    date: Date | string
+    price: number
+    venue: VenueCreateNestedOneWithoutEventsInput
+    purchases?: PurchaseCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutSavedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    date: Date | string
+    price: number
+    venueId: string
+    purchases?: PurchaseUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutSavedByInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutSavedByInput, EventUncheckedCreateWithoutSavedByInput>
+  }
+
+  export type UserUpsertWithoutSavedEventsInput = {
+    update: XOR<UserUpdateWithoutSavedEventsInput, UserUncheckedUpdateWithoutSavedEventsInput>
+    create: XOR<UserCreateWithoutSavedEventsInput, UserUncheckedCreateWithoutSavedEventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSavedEventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSavedEventsInput, UserUncheckedUpdateWithoutSavedEventsInput>
+  }
+
+  export type UserUpdateWithoutSavedEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    purchases?: PurchaseUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSavedEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    purchases?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type EventUpsertWithoutSavedByInput = {
+    update: XOR<EventUpdateWithoutSavedByInput, EventUncheckedUpdateWithoutSavedByInput>
+    create: XOR<EventCreateWithoutSavedByInput, EventUncheckedCreateWithoutSavedByInput>
+    where?: EventWhereInput
+  }
+
+  export type EventUpdateToOneWithWhereWithoutSavedByInput = {
+    where?: EventWhereInput
+    data: XOR<EventUpdateWithoutSavedByInput, EventUncheckedUpdateWithoutSavedByInput>
+  }
+
+  export type EventUpdateWithoutSavedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: FloatFieldUpdateOperationsInput | number
+    venue?: VenueUpdateOneRequiredWithoutEventsNestedInput
+    purchases?: PurchaseUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutSavedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    price?: FloatFieldUpdateOperationsInput | number
+    venueId?: StringFieldUpdateOperationsInput | string
+    purchases?: PurchaseUncheckedUpdateManyWithoutEventNestedInput
+  }
+
   export type UserCreateWithoutPreferencesInput = {
     id?: string
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
     purchases?: PurchaseCreateNestedManyWithoutUserInput
+    savedEvents?: SavedEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPreferencesInput = {
@@ -8583,8 +10598,16 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
     purchases?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    savedEvents?: SavedEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPreferencesInput = {
@@ -8608,8 +10631,16 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUpdateManyWithoutUserNestedInput
+    savedEvents?: SavedEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPreferencesInput = {
@@ -8617,8 +10648,16 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     purchases?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    savedEvents?: SavedEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventCreateWithoutPurchasesInput = {
@@ -8628,6 +10667,7 @@ export namespace Prisma {
     date: Date | string
     price: number
     venue: VenueCreateNestedOneWithoutEventsInput
+    savedBy?: SavedEventCreateNestedManyWithoutEventInput
   }
 
   export type EventUncheckedCreateWithoutPurchasesInput = {
@@ -8637,6 +10677,7 @@ export namespace Prisma {
     date: Date | string
     price: number
     venueId: string
+    savedBy?: SavedEventUncheckedCreateNestedManyWithoutEventInput
   }
 
   export type EventCreateOrConnectWithoutPurchasesInput = {
@@ -8649,8 +10690,16 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
     preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    savedEvents?: SavedEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPurchasesInput = {
@@ -8658,8 +10707,16 @@ export namespace Prisma {
     email: string
     password: string
     name: string
+    phoneNumber?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    zipCode?: string | null
+    stripeCustomerId?: string | null
+    wantsPushNotifications?: boolean
+    pushToken?: string | null
     createdAt?: Date | string
     preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    savedEvents?: SavedEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPurchasesInput = {
@@ -8685,6 +10742,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: FloatFieldUpdateOperationsInput | number
     venue?: VenueUpdateOneRequiredWithoutEventsNestedInput
+    savedBy?: SavedEventUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutPurchasesInput = {
@@ -8694,6 +10752,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: FloatFieldUpdateOperationsInput | number
     venueId?: StringFieldUpdateOperationsInput | string
+    savedBy?: SavedEventUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type UserUpsertWithoutPurchasesInput = {
@@ -8712,8 +10771,16 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    savedEvents?: SavedEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPurchasesInput = {
@@ -8721,8 +10788,16 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    zipCode?: NullableStringFieldUpdateOperationsInput | string | null
+    stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
+    wantsPushNotifications?: BoolFieldUpdateOperationsInput | boolean
+    pushToken?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    savedEvents?: SavedEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PurchaseCreateManyUserInput = {
@@ -8738,6 +10813,12 @@ export namespace Prisma {
     type: string
     value: string
     tmId?: string | null
+  }
+
+  export type SavedEventCreateManyUserInput = {
+    id?: string
+    eventId: string
+    createdAt?: Date | string
   }
 
   export type PurchaseUpdateWithoutUserInput = {
@@ -8785,6 +10866,24 @@ export namespace Prisma {
     tmId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type SavedEventUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    event?: EventUpdateOneRequiredWithoutSavedByNestedInput
+  }
+
+  export type SavedEventUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedEventUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    eventId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EventCreateManyVenueInput = {
     id?: string
     title: string
@@ -8800,6 +10899,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: FloatFieldUpdateOperationsInput | number
     purchases?: PurchaseUpdateManyWithoutEventNestedInput
+    savedBy?: SavedEventUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateWithoutVenueInput = {
@@ -8809,6 +10909,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     price?: FloatFieldUpdateOperationsInput | number
     purchases?: PurchaseUncheckedUpdateManyWithoutEventNestedInput
+    savedBy?: SavedEventUncheckedUpdateManyWithoutEventNestedInput
   }
 
   export type EventUncheckedUpdateManyWithoutVenueInput = {
@@ -8824,6 +10925,12 @@ export namespace Prisma {
     userId: string
     quantity: number
     total: number
+    createdAt?: Date | string
+  }
+
+  export type SavedEventCreateManyEventInput = {
+    id?: string
+    userId: string
     createdAt?: Date | string
   }
 
@@ -8848,6 +10955,24 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     quantity?: IntFieldUpdateOperationsInput | number
     total?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedEventUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSavedEventsNestedInput
+  }
+
+  export type SavedEventUncheckedUpdateWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SavedEventUncheckedUpdateManyWithoutEventInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
