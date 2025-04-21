@@ -1,8 +1,13 @@
 const express = require('express');
 const { fetchNearbyEvents, fetchFilteredEvents } = require('../services/ticketmaster.js');
 const verifyToken = require('../middleware/authMiddleware');
+const { PrismaClient } = require('../../generated/prisma');
 
+const prisma = new PrismaClient();
 const router = express.Router();
+
+
+
 
 router.get('/events/nearby', verifyToken, async (req, res) => {
     const { lat, lng, radius, category, keyword, date, page, size, sort } = req.query;
@@ -36,5 +41,12 @@ router.get('/events/nearby', verifyToken, async (req, res) => {
       res.status(500).json({ message: 'Error fetching events', error: error.message });
     }
   });
+
+
+  
+  
+
+
+
   
   module.exports = router;

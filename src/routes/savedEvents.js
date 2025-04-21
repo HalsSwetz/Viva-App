@@ -5,17 +5,27 @@ const verifyToken = require('../middleware/authMiddleware');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-router.post('/save', verifyToken, async (req, res) => {
+
+router.post('/', verifyToken, async (req, res) => {
   const { eventId } = req.body;
   const userId = req.user.userId;
 
   try {
+    const existing = await prisma.savedEvent.findFirst({
+      where: { userId, eventId },
+    });
+
+    if (existing) {
+      return res.status(400).json({ message: 'Event already saved' });
+    }
+
     const saved = await prisma.savedEvent.create({
       data: {
         userId,
         eventId,
       },
     });
+
     res.status(201).json(saved);
   } catch (err) {
     console.error('Error saving event:', err);
@@ -23,16 +33,20 @@ router.post('/save', verifyToken, async (req, res) => {
   }
 });
 
-router.get('/my-saved', verifyToken, async (req, res) => {
+
+router.get('/', verifyToken, async (req, res) => {
   const userId = req.user.userId;
 
   try {
     const savedEvents = await prisma.savedEvent.findMany({
       where: { userId },
       include: {
-        event: true, 
+        event: {
+          include: { venue: true },
+        },
       },
     });
+
     res.status(200).json(savedEvents);
   } catch (err) {
     console.error('Error fetching saved events:', err);
@@ -40,7 +54,7 @@ router.get('/my-saved', verifyToken, async (req, res) => {
   }
 });
 
-router.delete('/remove/:eventId', verifyToken, async (req, res) => {
+router.delete('/:eventId', verifyToken, async (req, res) => {
   const userId = req.user.userId;
   const { eventId } = req.params;
 
@@ -48,6 +62,7 @@ router.delete('/remove/:eventId', verifyToken, async (req, res) => {
     await prisma.savedEvent.deleteMany({
       where: { userId, eventId },
     });
+
     res.status(200).json({ message: 'Event unsaved successfully' });
   } catch (err) {
     console.error('Error removing saved event:', err);
