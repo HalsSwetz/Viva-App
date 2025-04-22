@@ -6,6 +6,8 @@ require('dotenv').config();
 
 const app = express();
 const prisma = new PrismaClient();
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const authRoutes = require('./routes/auth');
 const healthRoutes = require('./routes/health');
@@ -14,7 +16,7 @@ const eventsRoutes = require('./routes/events');
 const myEventsRoutes = require('./routes/myEvents');
 const savedEventsRoutes = require('./routes/savedEvents');
 
-
+app.use(helmet());
 
 
 app.use(cors());
@@ -28,7 +30,11 @@ app.use('/api/my-events', myEventsRoutes);
 app.use('/api/saved-events', savedEventsRoutes);
 app.use('/api/stripe', require('./routes/stripe'));
 
-
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+app.use(limiter);
 
 
 app.get('/', (req, res) => {
@@ -36,7 +42,12 @@ app.get('/', (req, res) => {
 });
 
 
-
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.stack || err);
+  res.status(err.status || 500).json({
+    message: err.message || 'Internal Server Error',
+  });
+});
 
 
 const PORT = process.env.PORT || 5050;
