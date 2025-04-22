@@ -19,7 +19,7 @@ const savedEventsRoutes = require('./routes/savedEvents');
 app.use(helmet());
 
 
-app.use(cors());
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
