@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 
-router.get('/events/nearby', verifyToken, async (req, res) => {
+router.get('/nearby', verifyToken, async (req, res) => {
     const { lat, lng, radius, category, keyword, date, page, size, sort } = req.query;
   
     if (!lat || !lng) {
@@ -42,7 +42,7 @@ router.get('/events/nearby', verifyToken, async (req, res) => {
     }
   });
 
-  router.get('/events', async (req, res) => {
+  router.get('/', async (req, res) => {
     const { query } = req.query;
   
     if (!query || query.length < 2) {
