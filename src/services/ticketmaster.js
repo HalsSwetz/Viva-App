@@ -46,6 +46,10 @@ const fetchFilteredEvents = async ({
       if (category) params.classificationName = category;
       if (keyword) params.keyword = keyword;
       if (date) params.startDateTime = date;
+      
+      if (type === 'venue') params.venueId = keyword;
+      if (type === 'artist') params.keyword = keyword;
+      if (type === 'genre') params.classificationName = keyword;
   
 
       const response = await axios.get(BASE_URL, { params });
