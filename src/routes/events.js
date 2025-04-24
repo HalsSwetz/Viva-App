@@ -43,36 +43,42 @@ router.get('/nearby', verifyToken, async (req, res) => {
   });
 
   router.get('/', async (req, res) => {
-    const { query, type } = req.query;
+    const { query, types } = req.query;
   
     if (!query || query.length < 2) {
       return res.status(400).json({ message: 'Query is required' });
     }
   
-    let endpoint = 'events.json'; 
-    if (type === 'artist' || type === 'sportsTeam') {
-      endpoint = 'attractions.json';
-    } else if (type === 'venue') {
-      endpoint = 'venues.json';
-    }
+    const typeArray = types ? types.split(',') : ['event']; // Default to 'event' if no types provided
   
     try {
-      const response = await fetch(
-        `https://app.ticketmaster.com/discovery/v2/${endpoint}?apikey=${process.env.TICKETMASTER_API_KEY}&keyword=${encodeURIComponent(query)}&size=5`
-      );
+      const results = [];
+      for (const type of typeArray) {
+        let endpoint = 'events.json';
+        if (type === 'artist' || type === 'sportsTeam') {
+          endpoint = 'attractions.json';
+        } else if (type === 'venue') {
+          endpoint = 'venues.json';
+        }
   
-      const data = await response.json();
+        const response = await fetch(
+          `https://app.ticketmaster.com/discovery/v2/${endpoint}?apikey=${process.env.TICKETMASTER_API_KEY}&keyword=${encodeURIComponent(query)}&size=5`
+        );
   
-      const embeddedKey = Object.keys(data._embedded || {})[0];
-      const results = embeddedKey ? data._embedded[embeddedKey] : [];
+        const data = await response.json();
+        const embeddedKey = Object.keys(data._embedded || {})[0];
+        const items = embeddedKey ? data._embedded[embeddedKey] : [];
   
-      const mapped = results.map((item) => ({
-        id: item.id,
-        name: item.name,
-        type: type || 'event',
-      }));
+        const mapped = items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          type: type,
+        }));
   
-      res.status(200).json(mapped);
+        results.push(...mapped);
+      }
+  
+      res.status(200).json(results);
     } catch (error) {
       console.error('Error fetching from Ticketmaster:', error);
       res.status(500).json({ message: 'Error fetching Ticketmaster data' });
@@ -102,7 +108,7 @@ router.get('/nearby', verifyToken, async (req, res) => {
           acc[pref.type].push(pref.tmId);
           return acc;
         }, {});
-  
+        
         if (grouped.artist) query.attractionId = grouped.artist.join(',');
         if (grouped.venue) query.venueId = grouped.venue.join(',');
         if (grouped.genre) query.classificationId = grouped.genre.join(',');
