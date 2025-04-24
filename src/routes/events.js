@@ -69,12 +69,64 @@ router.get('/nearby', verifyToken, async (req, res) => {
       const mapped = results.map((item) => ({
         id: item.id,
         name: item.name,
+        type: type || 'event',
       }));
   
       res.status(200).json(mapped);
     } catch (error) {
       console.error('Error fetching from Ticketmaster:', error);
       res.status(500).json({ message: 'Error fetching Ticketmaster data' });
+    }
+  });
+
+
+  router.get('/feed', verifyToken, async (req, res) => {
+    const userId = req.user.userId;
+  
+    try {
+      const preferences = await prisma.userPreference.findMany({
+        where: { userId },
+      });
+  
+      if (!preferences || preferences.length === 0) {
+        return res.status(200).json([]); // No preferences, return empty list
+      }
+  
+      // Group preferences by type
+      const grouped = preferences.reduce((acc, pref) => {
+        const { type, tmId } = pref;
+        if (!tmId) return acc; // skip if no tmId
+  
+        if (!acc[type]) acc[type] = [];
+        acc[type].push(tmId);
+        return acc;
+      }, {});
+  
+      // Build query params
+      const query = {
+        latlong: req.query.lat && req.query.lng ? `${req.query.lat},${req.query.lng}` : undefined,
+        radius: req.query.radius || 50,
+        unit: 'miles',
+        sort: 'date,asc',
+        size: 30,
+        apikey: process.env.TICKETMASTER_API_KEY,
+      };
+  
+      if (grouped.artist) query.attractionId = grouped.artist.join(',');
+      if (grouped.venue) query.venueId = grouped.venue.join(',');
+      if (grouped.genre) query.classificationId = grouped.genre.join(',');
+      if (grouped.city) query.city = grouped.city.join(',');
+  
+      const response = await axios.get('https://app.ticketmaster.com/discovery/v2/events.json', {
+        params: query,
+      });
+  
+      const events = response.data._embedded?.events || [];
+  
+      res.status(200).json(events);
+    } catch (error) {
+      console.error('Error in /api/events/feed:', error);
+      res.status(500).json({ message: 'Failed to fetch personalized events' });
     }
   });
   
