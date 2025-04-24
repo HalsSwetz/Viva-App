@@ -5,8 +5,8 @@ const { PrismaClient } = require('../../generated/prisma');
 
 const prisma = new PrismaClient();
 const router = express.Router();
-
-
+const zipcodes = require('zipcodes');
+const axios = require('axios');
 
 
 router.get('/nearby', verifyToken, async (req, res) => {
@@ -49,7 +49,7 @@ router.get('/nearby', verifyToken, async (req, res) => {
       return res.status(400).json({ message: 'Query is required' });
     }
   
-    let endpoint = 'events.json'; // default
+    let endpoint = 'events.json'; 
     if (type === 'artist' || type === 'sportsTeam') {
       endpoint = 'attractions.json';
     } else if (type === 'venue') {
@@ -80,53 +80,61 @@ router.get('/nearby', verifyToken, async (req, res) => {
   });
 
 
+
   router.get('/feed', verifyToken, async (req, res) => {
     const userId = req.user.userId;
   
     try {
-      const preferences = await prisma.userPreference.findMany({
-        where: { userId },
-      });
+      const preferences = await prisma.userPreference.findMany({ where: { userId } });
   
-      if (!preferences || preferences.length === 0) {
-        return res.status(200).json([]); // No preferences, return empty list
-      }
-  
-      // Group preferences by type
-      const grouped = preferences.reduce((acc, pref) => {
-        const { type, tmId } = pref;
-        if (!tmId) return acc; // skip if no tmId
-  
-        if (!acc[type]) acc[type] = [];
-        acc[type].push(tmId);
-        return acc;
-      }, {});
-  
-      // Build query params
-      const query = {
-        latlong: req.query.lat && req.query.lng ? `${req.query.lat},${req.query.lng}` : undefined,
+      let query = {
+        apikey: process.env.TICKETMASTER_API_KEY,
         radius: req.query.radius || 50,
         unit: 'miles',
+        size: 40,
         sort: 'date,asc',
-        size: 30,
-        apikey: process.env.TICKETMASTER_API_KEY,
       };
   
-      if (grouped.artist) query.attractionId = grouped.artist.join(',');
-      if (grouped.venue) query.venueId = grouped.venue.join(',');
-      if (grouped.genre) query.classificationId = grouped.genre.join(',');
-      if (grouped.city) query.city = grouped.city.join(',');
+      if (preferences.length > 0) {
+        const grouped = preferences.reduce((acc, pref) => {
+          if (!pref.tmId || !pref.type) return acc;
+          if (!acc[pref.type]) acc[pref.type] = [];
+          acc[pref.type].push(pref.tmId);
+          return acc;
+        }, {});
+  
+        if (grouped.artist) query.attractionId = grouped.artist.join(',');
+        if (grouped.venue) query.venueId = grouped.venue.join(',');
+        if (grouped.genre) query.classificationId = grouped.genre.join(',');
+        if (grouped.city) query.city = grouped.city.join(',');
+      } else {
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+          select: { zipCode: true },
+        });
+  
+        if (!user?.zipCode) {
+          return res.status(400).json({ message: 'No preferences or zip code available' });
+        }
+  
+        const location = zipcodes.lookup(user.zipCode);
+        if (!location) {
+          return res.status(400).json({ message: 'Invalid zip code' });
+        }
+  
+        const { latitude, longitude } = location;
+        query.latlong = `${latitude},${longitude}`;
+      }
   
       const response = await axios.get('https://app.ticketmaster.com/discovery/v2/events.json', {
         params: query,
       });
   
       const events = response.data._embedded?.events || [];
-  
       res.status(200).json(events);
     } catch (error) {
-      console.error('Error in /api/events/feed:', error);
-      res.status(500).json({ message: 'Failed to fetch personalized events' });
+      console.error('Error in /api/events/feed:', error.message);
+      res.status(500).json({ message: 'Failed to fetch personalized feed', error: error.message });
     }
   });
   

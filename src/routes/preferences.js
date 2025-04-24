@@ -1,21 +1,29 @@
 const express = require('express');
 const { PrismaClient } = require('../../generated/prisma');
-const verifyToken = require('../middleware/authMiddleware'); // adjust if your path differs
+const verifyToken = require('../middleware/authMiddleware'); 
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
 router.patch('/update-preferences', verifyToken, async (req, res) => {
-  const { preferences } = req.body;
+  const { preferences } = req.body; 
   const userId = req.user.userId;
 
   try {
-    await prisma.userPreference.deleteMany({ where: { userId } }); // Clear old prefs
-
-    const newPrefs = preferences.map(pref => ({
+    const tmIdsToRemove = preferences.filter(pref => pref.remove).map(pref => pref.tmId);
+    if (tmIdsToRemove.length > 0) {
+      await prisma.userPreference.deleteMany({
+        where: {
+          userId,
+          tmId: { in: tmIdsToRemove }
+        }
+      });
+    }
+    const newPrefs = preferences.filter(pref => !pref.remove).map(pref => ({
       userId,
       type: pref.type,
       value: pref.value,
+      tmId: pref.tmId, 
     }));
 
     await prisma.userPreference.createMany({
