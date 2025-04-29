@@ -29,6 +29,7 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/my-events', myEventsRoutes);
 app.use('/api/saved-events', savedEventsRoutes);
 app.use('/api/stripe', require('./routes/stripe'));
+app.use('/api/user', require('./routes/user'));
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
