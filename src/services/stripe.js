@@ -31,8 +31,9 @@ const createSetupIntent = async (customerId) => {
   try {
     const setupIntent = await stripe.setupIntents.create({
       customer: customerId,
+      payment_method_types: ['card'], 
     });
-    console.log('SetupIntent created:', setupIntent);  // Log the created setupIntent
+    console.log('SetupIntent created:', setupIntent); 
     return setupIntent;
   } catch (error) {
     console.error('Error creating setupIntent:', error);
