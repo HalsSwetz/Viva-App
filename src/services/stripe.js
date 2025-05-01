@@ -27,10 +27,18 @@ const createOrRetrieveCustomer = async (user) => {
 };
 
 const createSetupIntent = async (customerId) => {
-    return await stripe.setupIntents.create({
+  console.log(`Creating setup intent for customer: ${customerId}`);
+  try {
+    const setupIntent = await stripe.setupIntents.create({
       customer: customerId,
     });
-  };
+    console.log('SetupIntent created:', setupIntent);  // Log the created setupIntent
+    return setupIntent;
+  } catch (error) {
+    console.error('Error creating setupIntent:', error);
+    throw error;
+  }
+};
 
 module.exports = { 
     createOrRetrieveCustomer, 
