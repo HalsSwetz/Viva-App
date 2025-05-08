@@ -110,9 +110,9 @@ router.get('/nearby', verifyToken, async (req, res) => {
         }, {});
         
         if (grouped.artist) query.attractionId = grouped.artist.join(',');
-        if (grouped.venue) query.venueId = grouped.venue.join(',');
-        if (grouped.genre) query.classificationId = grouped.genre.join(',');
-        if (grouped.city) query.city = grouped.city.join(',');
+        // if (grouped.venue) query.venueId = grouped.venue.join(',');
+        // if (grouped.genre) query.classificationId = grouped.genre.join(',');
+        // if (grouped.city) query.city = grouped.city.join(',');
       } else {
         const user = await prisma.user.findUnique({
           where: { id: userId },
@@ -131,7 +131,7 @@ router.get('/nearby', verifyToken, async (req, res) => {
         const { latitude, longitude } = location;
         query.latlong = `${latitude},${longitude}`;
       }
-  
+      console.log('[Backend] Query params to Ticketmaster:', query);
       const response = await axios.get('https://app.ticketmaster.com/discovery/v2/events.json', {
         params: query,
       });
